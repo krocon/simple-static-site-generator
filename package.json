@@ -1,0 +1,27 @@
+{
+  "name": "simple-static-site-generator",
+  "version": "1.0.0",
+  "description": "simple-static-site-generator",
+  "scripts": {
+    "build": "./node_modules/.bin/gulp",
+    "serve": "./node_modules/.bin/gulp serve"
+  },
+  "keywords": [
+    "static site",
+    "generator",
+    "simple",
+    "cli",
+    "serverless"
+  ],
+  "author": "Marc Kronberg",
+  "license": "MIT",
+  "devDependencies": {
+    "browser-sync": "^2.26.3",
+    "del": "^3.0.0",
+    "gulp": "^4.0.0",
+    "gulp-babel": "^8.0.0-beta.2",
+    "gulp-concat": "^2.6.1",
+    "gulp-sourcemaps": "^2.6.4",
+    "gulp-headerfooter": "^1.0.3"
+  }
+}
