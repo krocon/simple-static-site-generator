@@ -64,7 +64,8 @@ const cleanAndCopyAssetsAndBuild = gulp.series(clean, copyAssets, build);
 const serve =
     gulp.parallel(
         cleanAndCopyAssetsAndBuild,
-        watchFiles, startBrowsersync
+        watchFiles,
+        startBrowsersync
     );
 
 
