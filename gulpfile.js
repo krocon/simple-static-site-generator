@@ -1,3 +1,5 @@
+"use strict";
+
 const gulp = require("gulp");
 const del = require('del');
 const browsersync = require("browser-sync").create();
@@ -15,41 +17,30 @@ function startBrowsersync(done) {
     done();
 }
 
-
 // BrowserSync Reload
 function reloadBrowserSync(done) {
     browsersync.reload();
     done();
 }
 
-
-// Watch files
-function watchFiles() {
-    gulp.watch("./dist/**/*", reloadBrowserSync);
-    gulp.watch("./src/**/*", cleanCopyAssetsAndBuild);
-    gulp.watch("./index.html", reloadBrowserSync);
-}
-
 // Clean dist folder
-function clean(done) {
+function clean() {
     console.info('Cleaning...');
     return del(["./dist/**/*"]);
-    done();
 }
 
 // copy assets:
-function copyAssets(done) {
+function copyAssets() {
     console.info('copy assets...');
     return gulp
         .src(['src/assets/**/*'], {base: 'src/assets'})
         .pipe(gulp.dest('dist/assets'));
-    done();
 }
 
 // build: concatinate for each html  header & content & footer:
-function build(done) {
+function build() {
     console.info('build...');
-    gulp
+    return gulp
         .src(['src/**/*.html', '!src/footer.html', '!src/header.html'])
         .pipe(headerfooter.header('src/header.html'))
         .pipe(headerfooter.footer('src/footer.html'))
@@ -60,18 +51,28 @@ function build(done) {
             minifyJs: true
         }))
         .pipe(gulp.dest('dist'));
-    done();
 }
 
-const cleanCopyAssetsAndBuild = gulp.series(clean, copyAssets, build);
-const serve = gulp.parallel(cleanCopyAssetsAndBuild, watchFiles, startBrowsersync);
+// Watch files
+function watchFiles() {
+    gulp.watch("./dist/**/*", reloadBrowserSync);
+    gulp.watch("./src/**/*", build);
+}
 
 
-exports.default = build;
+const cleanAndCopyAssetsAndBuild = gulp.series(clean, copyAssets, build);
+const serve =
+    gulp.parallel(
+        cleanAndCopyAssetsAndBuild,
+        watchFiles, startBrowsersync
+    );
+
+
+exports.default = serve;
+exports.serve = serve;
+
 exports.clean = clean;
 exports.copyAssets = copyAssets;
 exports.build = build;
-exports.cleanCopyAssetsAndBuild = cleanCopyAssetsAndBuild;
 
-exports.serve = serve;
-exports.watchFiles = watchFiles;
+

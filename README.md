@@ -9,6 +9,6 @@ simple static site generator (serverless html)
 2) Load the node_modules:
 `npm install`
 
-## Start
+## Start coding
 
-`npm run serve`
+`npm start`
