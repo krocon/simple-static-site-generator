@@ -2,7 +2,7 @@ const gulp = require("gulp");
 const del = require('del');
 const browsersync = require("browser-sync").create();
 const headerfooter = require('gulp-headerfooter');
-
+const htmlmin = require('gulp-htmlmin');
 
 // BrowserSync
 function startBrowsersync(done) {
@@ -50,9 +50,15 @@ function copyAssets(done) {
 function build(done) {
     console.info('build...');
     gulp
-        .src('src/**/*.html')
+        .src(['src/**/*.html', '!src/footer.html', '!src/header.html'])
         .pipe(headerfooter.header('src/header.html'))
         .pipe(headerfooter.footer('src/footer.html'))
+        .pipe(htmlmin({
+            collapseWhitespace: true,
+            removeComments: true,
+            minifyCss: true,
+            minifyJs: true
+        }))
         .pipe(gulp.dest('dist'));
     done();
 }
